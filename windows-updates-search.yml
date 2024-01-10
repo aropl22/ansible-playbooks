@@ -1,0 +1,13 @@
+---
+ - name: Search_Windows_Security_and_Critical_Updates
+   hosts: windows
+   tasks:
+   - name: search-only, return list of found updates, log to ansible-wu.txt
+     ansible.windows.win_updates:
+     category_names:
+     - SecurityUpdates
+     - CriticalUpdates
+     #-UpdateRollups
+     state: searched
+     log_path: .\ansible-wu.txt
+...

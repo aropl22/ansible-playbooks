@@ -1,0 +1,8 @@
+---
+ - name: Download_windows_updates
+   hosts: windows
+   tasks:
+   - name: Search and download Windows updates without installing them
+     ansible.windows.win_updates:
+     state: downloaded
+...

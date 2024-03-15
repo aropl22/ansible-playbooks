@@ -1,0 +1,52 @@
+---
+- name: Promote Windows Server to Domain Controller
+  hosts: windows_servers
+  gather_facts: no
+  vars:
+    domain_name: "example.com"
+    admin_username: "Administrator"
+    admin_password: "YourAdminPassword"
+    dns_ip_address: "127.0.0.1"  # Update this with your DNS IP address
+
+  tasks:
+    - name: Install Active Directory Domain Services role
+      win_feature:
+        name: AD-Domain-Services
+        state: present
+
+    - name: Promote server to domain controller
+      win_command: |
+        Install-ADDSDomainController `
+          -NoGlobalCatalog:$false `
+          -CreateDnsDelegation:$false `
+          -CriticalReplicationOnly:$false `
+          -DatabasePath "C:\Windows\NTDS" `
+          -DomainName "{{ domain_name }}" `
+          -InstallDns:$true `
+          -LogPath "C:\Windows\NTDS" `
+          -NoRebootOnCompletion:$false `
+          -SiteName "Default-First-Site-Name" `
+          -SysvolPath "C:\Windows\SYSVOL" `
+          -Force:$true `
+          -SafeModeAdministratorPassword (ConvertTo-SecureString "{{ admin_password }}" -AsPlainText -Force) `
+          -Force:$true
+      register: promotion_result
+      become: yes
+      become_user: "{{ admin_username }}"
+      become_method: runas
+
+    - name: Restart server after promoting to domain controller
+      win_reboot:
+      when: promotion_result is changed
+      become: yes
+      become_user: "{{ admin_username }}"
+      become_method: runas
+
+    - name: Configure DNS settings
+      win_dns_client:
+        adapter_names: '*'
+        ipv4_addresses:
+          - "{{ dns_ip_address }}"
+      become: yes
+      become_user: "{{ admin_username }}"
+      become_method: runas

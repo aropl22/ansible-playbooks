@@ -1,0 +1,35 @@
+---
+- name: Configure IIS
+  hosts: windows_servers
+  gather_facts: no
+  vars:
+    iis_website_name: "MyWebsite"
+    iis_website_path: "C:\\inetpub\\wwwroot\\MyWebsite"
+    iis_app_pool_name: "MyAppPool"
+    iis_app_pool_framework: "v4.0"
+
+  tasks:
+    - name: Install IIS Web Server Role
+      win_feature:
+        name: Web-Server
+        state: present
+
+    - name: Create Website Directory
+      win_file:
+        path: "{{ iis_website_path }}"
+        state: directory
+
+    - name: Create Application Pool
+      win_iis_webapppool:
+        name: "{{ iis_app_pool_name }}"
+        state: present
+        managed_pipeline_mode: integrated
+        managed_runtime_version: "{{ iis_app_pool_framework }}"
+
+    - name: Create Website
+      win_iis_website:
+        name: "{{ iis_website_name }}"
+        state: started
+        physical_path: "{{ iis_website_path }}"
+        application_pool: "{{ iis_app_pool_name }}"
+        port: 80

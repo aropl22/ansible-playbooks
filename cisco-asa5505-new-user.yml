@@ -1,0 +1,20 @@
+---
+- name: Create new user on ASA 5505
+  hosts: asa
+  gather_facts: no
+  vars:
+    asa_username: "newuser"
+    asa_password: "newpassword"
+    asa_privilege_level: 15  # Set the privilege level as required
+  tasks:
+    - name: Configure new user
+      ios_config:
+        provider: "{{ cli }}"
+        commands:
+          - username {{ asa_username }} privilege {{ asa_privilege_level }} password {{ asa_password }}
+          - privilege exec level {{ asa_privilege_level }} show running-config
+      register: config_result
+
+    - name: Display configuration changes
+      debug:
+        var: config_result.stdout_lines

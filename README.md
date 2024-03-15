@@ -1,5 +1,15 @@
 # ansible-playbooks
 
+### cisco-asa5505-new-user
+
+To create a new user on a Cisco ASA 5505 device using Ansible, you can utilize the ios_config module to send the necessary configuration commands to the device.
+Replace "newuser" with the username you want to create.
+Replace "newpassword" with the password for the new user.
+Adjust the privilege level (asa_privilege_level) as necessary. The example sets it to 15, which is the maximum privilege level.
+Make sure you have SSH access enabled on your ASA device and that Ansible is able to connect to it using SSH.
+
+Also, ensure that you have defined your ASA device(s) under the inventory file hosts and have configured the connection details appropriately in your Ansible configuration file (ansible.cfg).
+
 ### windows-promote-server-to-domain-controller
 
 Promoting a server to an Active Directory Domain Controller (DC) typically involves several steps, including installing the Active Directory Domain Services (AD DS) role, promoting the server to a domain controller, and configuring the domain. You can use Ansible to automate these tasks using a playbook. 

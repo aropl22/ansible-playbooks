@@ -1,5 +1,11 @@
 # ansible-playbooks
 
+### cisco-asa5505-delete-user
+
+To delete a user on a Cisco ASA device using Ansible, you can utilize the ios_config module to send the necessary configuration commands to the device.
+Replace "user_to_delete" with the username you want to delete.
+Make sure you have SSH access enabled on your ASA device and that Ansible is able to connect to it using SSH.
+
 ### cisco-asa5505-new-user
 
 To create a new user on a Cisco ASA 5505 device using Ansible, you can utilize the ios_config module to send the necessary configuration commands to the device.

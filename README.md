@@ -1,6 +1,6 @@
 # ansible-playbooks
 
-### promote-windows-server-to-domain-controller
+### windows-promote-server-to-domain-controller
 
 Promoting a server to an Active Directory Domain Controller (DC) typically involves several steps, including installing the Active Directory Domain Services (AD DS) role, promoting the server to a domain controller, and configuring the domain. You can use Ansible to automate these tasks using a playbook. 
 
@@ -15,3 +15,19 @@ dns_ip_address: The IP address of the DNS server that will be used by the domain
 You can execute this playbook using the ansible-playbook command:
 
 ansible-playbook -i inventory_file promote_dc.yml
+
+### windows-iis-server
+
+In this playbook:
+
+Replace windows_servers with the group of your Windows servers in your Ansible inventory.
+Update the iis_website_name variable with the name you want to assign to your IIS website.
+Update the iis_website_path variable with the path where you want to store your website files.
+Update the iis_app_pool_name variable with the name you want to assign to your IIS application pool.
+Update the iis_app_pool_framework variable with the .NET Framework version you want to use for your application pool.
+This playbook performs the following tasks:
+
+Installs the IIS Web Server role.
+Creates a directory for the website files.
+Creates an application pool with the specified .NET Framework version.
+Creates a website that listens on port 80, points to the specified directory, and uses the created application pool.`
